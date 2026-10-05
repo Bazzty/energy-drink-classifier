@@ -1,0 +1,12 @@
+# Entorno y artefactos
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+log/
+lightning_logs/
+*.ckpt
+*.pt
+
+# Sistema
+.DS_Store
