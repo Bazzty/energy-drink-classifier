@@ -71,18 +71,32 @@ Requisitos del laboratorio: al menos 50 fotos propias por clase en `train` y 10 
 ## 🧠 Método
 
 - **Modelo:** ResNet-18 con pesos de ImageNet, capa final reemplazada por 3 salidas.
-- **Datos:** `ImageFolder`, validación del 20 % tomada de `train` con semilla fija.
+- **Datos:** `ImageFolder`; 20 % de `train` para validación, separado por bloques de fotos consecutivas (evita gemelas de una misma ráfaga) y con semilla fija.
 - **Aumento de datos:** recorte aleatorio, volteo horizontal y variación de color.
-- **Entrenamiento:** PyTorch Lightning, Adam (lr 1e-3), 10 épocas.
+- **Entrenamiento:** PyTorch Lightning, Adam (lr 3e-4), 25 épocas, pesos por clase en la pérdida.
 - **Evaluación:** exactitud y matriz de confusión sobre `data/test` (meta: ≥ 0,80).
 
 ## 📊 Resultados
 
-> Se completa después de entrenar con los datos finales.
+| Clase | Entrenamiento | Test |
+|---|---|---|
+| `monster` | 63 | 15 |
+| `redbull` | 82 | 15 |
+| `ninguna` | 60 | 16 |
 
-| Métrica | Valor |
-|---|---|
-| Exactitud en test | _pendiente_ |
+**Exactitud en test: 0,978** (45 de 46 fotos).
+
+Matriz de confusión (filas: clase real, columnas: predicción):
+
+| Real \ Predicho | monster | ninguna | redbull |
+|---|---|---|---|
+| **monster** | 15 | 0 | 0 |
+| **ninguna** | 0 | 15 | 1 |
+| **redbull** | 0 | 0 | 15 |
+
+El único error es una foto de `ninguna` clasificada como Red Bull. Un primer intento con 10 épocas y pocas fotos de `ninguna` había dado 0,69.
+
+**Limitaciones:** el test es pequeño (46 fotos), algunas fotos de Monster y Red Bull del test se parecen a las de entrenamiento, y todas se tomaron en pocos lugares con la misma mesa de fondo.
 
 ## 🤝 Flujo de trabajo en equipo
 
